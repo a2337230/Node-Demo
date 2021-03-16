@@ -1,3 +1,1 @@
-npm init -y 初始化npm
-
-cnpm i lodash --save
+01 搭建服务器环境
