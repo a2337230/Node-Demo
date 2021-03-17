@@ -13,3 +13,12 @@ select id,username FROM users; 查询指定列
 select * FROM users WHERE username='zs'; 条件查询
 select * FROM users WHERE username='zs' AND `password`='123456'; 多条件查询（两者都满足）
 select * FROM users WHERE username='zs' OR `password`='123456';多条件查询（满足一个即可）
+select * FROM users WHERE username LIKE '%z%';模糊查询
+
+select * FROM users WHERE `password` LIKE '%1%' ORDER BY id DESC; 倒序
+
+修改
+UPDATE users SET realname='李四2' WHERE username='lisi'; 修改
+
+删除
+DELETE from users WHERE username='lisi'
