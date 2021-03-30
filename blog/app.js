@@ -45,14 +45,28 @@ const serverHandle = (req, res) => {
   // 处理 post data
   getPostData(req).then(postData => {
     req.body = postData
+
+    const blogResult = handleBlogRouter(req, res)
+    if (blogResult) {
+      blogResult.then(blogData => {
+        if (blogData) {
+          res.end(
+            JSON.stringify(blogData)
+          )
+          return
+        }
+      })
+    }
   })
   // 处理路由
   const blogData = handleBlogRouter(req, res)
   const userData = handleUserRouter(req, res)
   if (blogData) {
-    res.end(
-      JSON.stringify(blogData)
-    )
+    blogData.then(blog => {
+      res.end(
+        JSON.stringify(blog)
+      )
+    })
     return
   }
 
