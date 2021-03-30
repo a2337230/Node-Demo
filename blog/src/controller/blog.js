@@ -13,19 +13,26 @@ const getList = (author, keyword) => {
 }
 
 const getDetail = (id) => {
-  return {
-    id: 1,
-    title: '123',
-    content: '324',
-    createTime: new Date().now,
-    author: 'zzzz'
-  }
+  const sql = `select * from blogs where id='${id}'`
+  return exec(sql).then(rows => {
+    return rows[0]
+  })
 }
 
 const newblog = (blogData = {}) => {
-  return {
-    id: 3
+  const title = blogData.title
+  const content = blogData.content
+  const author = blogData.author
+  const createtime = Date.now()
+  if (title) {
+    const sql = `insert into blogs(title,content,author,createtime) values('${title}','${content}', '${author}', ${createtime}); `
+    return exec(sql).then(row => {
+      return {
+        id: row.insertId
+      }
+    })
   }
+  
 }
 module.exports = {
   getList,

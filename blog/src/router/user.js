@@ -8,10 +8,16 @@ const handleUserRouter = (req, res) => {
     console.log(req.body, 123)
     const { username, password } = req.body
     const result = loginCheck(username, password)
-    if (result) {
-      return new SuccessModel()
-    }
-    return ErrorModel('密码错误')
+    return result.then(data => {
+      if (data.username) {
+        return new SuccessModel()
+      }
+      return ErrorModel('密码错误')
+    })
+    // if (result) {
+    //   return new SuccessModel()
+    // }
+    // return ErrorModel('密码错误')
   }
 }
 

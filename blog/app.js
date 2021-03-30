@@ -1,10 +1,8 @@
-const { resolve } = require('path')
 const querystring = require('querystring')
 const handleBlogRouter = require('./src/router/blog')
 const handleUserRouter = require('./src/router/user')
 
 const getPostData = (req) => {
-  
   const promise = new Promise((resolve, reject) => {
     if (req.method !== 'POST') {
       resolve({})
@@ -45,7 +43,6 @@ const serverHandle = (req, res) => {
   // 处理 post data
   getPostData(req).then(postData => {
     req.body = postData
-
     const blogResult = handleBlogRouter(req, res)
     if (blogResult) {
       blogResult.then(blogData => {
@@ -53,8 +50,9 @@ const serverHandle = (req, res) => {
           res.end(
             JSON.stringify(blogData)
           )
-          return
+          
         }
+        return
       })
     }
   })
@@ -63,6 +61,7 @@ const serverHandle = (req, res) => {
   const userData = handleUserRouter(req, res)
   if (blogData) {
     blogData.then(blog => {
+      console.log(blog, 45645)
       res.end(
         JSON.stringify(blog)
       )
@@ -71,9 +70,11 @@ const serverHandle = (req, res) => {
   }
 
   if (userData) {
-    res.end(
-      JSON.stringify(userData)
-    )
+    userData.then(user => {
+      res.end(
+        JSON.stringify(user)
+      )
+    })
     return
   }
 }
