@@ -4,6 +4,7 @@ const handleBlogRouter = require('./src/router/blog')
 const handleUserRouter = require('./src/router/user')
 
 const getPostData = (req) => {
+  
   const promise = new Promise((resolve, reject) => {
     if (req.method !== 'POST') {
       resolve({})
@@ -13,19 +14,19 @@ const getPostData = (req) => {
       resolve({})
       return
     }
-  })
-  let postData = ''
-  req.on('data', chunk => {
-    postData += chunk.toString()
-  })
-  req.on('end', () => {
-    if (!postData) {
-      resolve({})
-      return
-    }
-    resolve(
-      JSON.parse(postData)
-    )
+    let postData = ''
+    req.on('data', chunk => {
+      postData += chunk.toString()
+    })
+    req.on('end', () => {
+      if (!postData) {
+        resolve({})
+        return
+      }
+      resolve(
+        JSON.parse(postData)
+      )
+    })
   })
   return promise
 }

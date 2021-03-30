@@ -35,7 +35,9 @@ const getDetail = (id) => {
 }
 
 const newblog = (blogData = {}) => {
-
+  return {
+    id: 3
+  }
 }
 module.exports = {
   getList,
