@@ -1,7 +1,7 @@
 const querystring = require('querystring')
 const handleBlogRouter = require('./src/router/blog')
 const handleUserRouter = require('./src/router/user')
-
+// const SESSION_DATA = {}
 const getPostData = (req) => {
   const promise = new Promise((resolve, reject) => {
     if (req.method !== 'POST') {
@@ -50,7 +50,16 @@ const serverHandle = (req, res) => {
       req.cookie[key] = val
     }
   })
-  console.log(req.cookie)
+  // 解析session
+  // const userId = req.cookie.userId
+  // if (userId) {
+  //   if (SESSION_DATA[userId]) {
+  //     req.session = SESSION_DATA[userId]
+  //   } else {
+  //     SESSION_DATA[userId] = {}
+  //     req.session = SESSION_DATA[userId]
+  //   }
+  // }
   // 处理 post data
   getPostData(req).then(postData => {
     req.body = postData
