@@ -3,13 +3,28 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const session = require('express-session')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const blogRouter = require('./routes/blog')
-const userRouter = require('./routes/user')
+const userRouter = require('./routes/user');
+const { stdout } = require('process');
 
 var app = express();
+
+const ENV = process.env.NODE_ENV
+if (ENV !== 'production') {
+  app.use(logger('dev'))
+} else {
+  const logFileName = path.join(__dirname, 'logs', 'access.log')
+  const writeStream = fs.createWritesStream(logFileName, {
+    flags: 'a'
+  })
+  app.use(logger('combined', {
+    stream: writeStream
+  }))
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,6 +41,14 @@ app.use('/users', usersRouter);
 app.use('/blog', blogRouter);
 app.use('/user', userRouter);
 
+app.use(session({
+  secret: '12344',
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000
+  }
+}))
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
