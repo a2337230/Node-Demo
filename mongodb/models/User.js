@@ -13,3 +13,5 @@ const UserSchema = mongoose.Schema({
 
 // Model 对应collection
 const User = mongoose.model('user', UserSchema)
+
+module.exports = User
