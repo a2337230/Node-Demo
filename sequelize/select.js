@@ -34,28 +34,49 @@ const { Blog, User } = require('./model')
   })
   console.log(blogListCount.count, blogListCount.rows)
 
-  // 连表查询
-  const blogListWithUser = await Blog.findAndCountAll({
-    order: [
-      ['id', 'desc']
-    ],
+  // 连表查询 依赖于Blog.belongsTo
+  // const blogListWithUser = await Blog.findAndCountAll({
+  //   order: [
+  //     ['id', 'desc']
+  //   ],
+  //   include: [
+  //     {
+  //       model: User,
+  //       attributes: ['userName', 'nickName'],
+  //       where: {
+  //         userName: 'lisi'
+  //       }
+  //     }
+  //   ]
+  // })
+
+  // console.log(
+  //   blogListWithUser.count,
+  //   blogListWithUser.rows.map(blog => {
+  //     const blogVal = blog.dataValues
+  //     // const user = blogVal.user.dataValues
+  //     blogVal.user = blogVal.user.dataValues
+  //     return blogVal
+  //   })
+  // )
+
+  // 连表查询 依赖于User.hasMany
+  const userList = await User.findAndCountAll({
+    attributes: ['userName', 'nickName'],
     include: [
       {
-        model: User,
-        attributes: ['userName', 'nickName'],
-        where: {
-          userName: 'lisi'
-        }
+        model: Blog
       }
     ]
   })
-
   console.log(
-    blogListWithUser.count,
-    blogListWithUser.rows.map(blog => {
-      const blogVal = blog.dataValues
-      const user = blogVal.user.dataValues
-      console.log(blogVal, user)
+    '用户连表',
+    userList.count,
+    userList.rows.map(user => {
+      console.log(user)
+      // const userVal = user.dataValues
+      // userVal.blog = userVal.blog.dataValues
+      // return userVal
     })
   )
 })()
